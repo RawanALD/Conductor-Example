@@ -9,6 +9,9 @@ var okay = 0
 var missed = 0
 var grade = "NA"
 
+# "success" or "fail" - set by Game.gd when the minigame ends.
+var outcome = "success"
+
 
 func set_score(new):
 	score = new
@@ -38,4 +41,16 @@ func set_score(new):
 		grade = "D-"
 	else:
 		grade = "F"
-		
+
+
+# TODO: hook these up to your actual inventory/crafting system.
+# Called from End.gd once based on Global.outcome.
+
+func grant_al_sadu_pattern():
+	# e.g. Inventory.add_item("al_sadu_pattern")
+	pass
+
+
+func return_materials():
+	# e.g. Inventory.add_item("wool"); Inventory.add_item("plant")
+	pass

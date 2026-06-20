@@ -1,7 +1,7 @@
 extends AudioStreamPlayer
 
-export var bpm := 100
-export var measures := 4
+@export var bpm := 100
+@export var measures := 4
 
 # Tracking the beat and song position
 var song_position = 0.0
@@ -9,7 +9,7 @@ var song_position_in_beats = 1
 var sec_per_beat = 60.0 / bpm
 var last_reported_beat = 0
 var beats_before_start = 0
-var measure = 1
+var current_measure = 1
 
 # Determining how close to the beat an event is
 var closest = 0
@@ -33,12 +33,12 @@ func _physics_process(_delta):
 
 func _report_beat():
 	if last_reported_beat < song_position_in_beats:
-		if measure > measures:
-			measure = 1
+		if current_measure > measures:
+			current_measure = 1
 		emit_signal("beat", song_position_in_beats)
-		emit_signal("measure", measure)
+		emit_signal("measure", current_measure)
 		last_reported_beat = song_position_in_beats
-		measure += 1
+		current_measure += 1
 
 
 func play_with_beat_offset(num):
@@ -53,11 +53,11 @@ func closest_beat(nth):
 	return Vector2(closest, time_off_beat)
 
 
-func play_from_beat(beat, offset):
+func play_from_beat(start_beat, offset):
 	play()
-	seek(beat * sec_per_beat)
+	seek(start_beat * sec_per_beat)
 	beats_before_start = offset
-	measure = beat % measures
+	current_measure = start_beat % measures
 
 
 func _on_StartTimer_timeout():
